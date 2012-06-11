@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Openerp-sentry by gisce</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Openerp-sentry</h1>
+        <p>Sentry logger for OpenERP</p>
+        <p class="view"><a href="https://github.com/gisce/openerp-sentry">View the Project on GitHub <small>gisce/openerp-sentry</small></a></p>
+        <ul>
+          <li><a href="https://github.com/gisce/openerp-sentry/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/gisce/openerp-sentry/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/gisce/openerp-sentry">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>openerp-sentry</h1>
+
+<p><a href="https://www.getsentry.com">Sentry</a> logger for OpenERP</p>
+
+<h2>Configuration</h2>
+
+<ol>
+<li>Generate Sentry DSN</li>
+<li>Add the keyword <code>sentry_dsn</code> in your openerp server config file</li>
+<li>Install dependencies `pip install -r reqs.txt</li>
+<li>Install sentry module in the OpenERP</li>
+<li>Enjoy it!</li>
+</ol><h2>Usage</h2>
+
+<ul>
+<li>All uncaught exceptions will be processed with Sentry logger.</li>
+<li>
+<code>osv.except_osv</code> exceptions won't be processed`.</li>
+<li>You can use raven client from your OpenERP instance.</li>
+</ul><div class="highlight">
+<pre><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'sentry.setup'</span><span class="p">)</span><span class="o">.</span><span class="n">client</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">captureMessage</span><span class="p">(</span><span class="s">'Hello world!'</span><span class="p">)</span>
+</pre>
+</div>
+
+
+<p>You can see all the documentation for raven here: <a href="http://raven.readthedocs.org">http://raven.readthedocs.org</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/gisce">gisce</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
