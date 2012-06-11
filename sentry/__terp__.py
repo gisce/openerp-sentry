@@ -5,6 +5,7 @@
     "depends": ["base"],
     "author": "GISCE",
     "category": "Tools",
+    "license": "GPL-3'"
     "description": """
     This module provide :
         * Log events to sentry server: http://www.getsentry.com
