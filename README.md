@@ -1,7 +1,7 @@
 openerp-sentry
 ==============
 
-Sentry logger for OpenERP
+Sentry logger for OpenERP (v5 legacy)
 
 Configuration
 -------------
