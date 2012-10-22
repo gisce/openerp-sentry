@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Sentry",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "depends": ["base"],
     "author": "GISCE",
     "category": "Tools",
