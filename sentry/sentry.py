@@ -1,41 +1,17 @@
 # -*- coding: utf-8 -*-
 # This file is part of openerp-sentry. The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
+from raven import Client
+from raven.conf import setup_logging
+from raven.handlers.logging import SentryHandler
 
 from osv import osv
 from tools import config
 from tools.translate import _
-import pooler
-
-from raven import Client
-
-
-class SentyDispatcherException(Exception):
-    def __init__(self, exception, traceback):
-        # Ugly hack to know wich type of exception it is.
-        # From client code: bin/rpc.py L:46
-        exc_type = unicode(exception).split(' -- ')[0]
-        # Predefined excptions from client code: bin/rpc.py L:177
-        if exc_type not in ('warning', 'UserError'):
-            if config.get('db_name', False):
-                sentry = pooler.get_pool(config['db_name']).get('sentry.setup')
-                if sentry:
-                    sentry.client.captureException()
-        self.exception = exception
-        self.traceback = traceback
-
-
-def monkeypatch():
-    import netsvc
-    logger = netsvc.Logger()
-    logger.notifyChannel('sentry', netsvc.LOG_INFO,
-                         u'Monkeypatching OpenERPDispatcherException!')
-    netsvc.OpenERPDispatcherException = SentyDispatcherException
 
 
 class SentrySetup(osv.osv):
-    """Monkeypatch OpenERP logger.
-    """
+    """Make sentry capture the logs once OpenERP starts"""
     _name = 'sentry.setup'
 
     def __init__(self, pool, cursor):
@@ -49,7 +25,8 @@ class SentrySetup(osv.osv):
             'raven_sanitize_openerp.OpenerpPasswordsProcessor'
         )
         self.client = Client(dsn=config['sentry_dsn'], processors=processors)
-        monkeypatch()
+        handler = SentryHandler(self.client)
+        setup_logging(handler)
         super(SentrySetup, self).__init__(pool, cursor)
 
 SentrySetup()
