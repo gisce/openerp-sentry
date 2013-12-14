@@ -10,7 +10,65 @@ Configuration
 2. Add the keyword `sentry_dsn` in your openerp server config file
 3. Install dependencies `pip install -r reqs.txt
 4. Install sentry module in the OpenERP
-5. Enjoy it!
+5. Edit the openerp/netsvc.py and add the needs...
+6. Enjoy it!
+
+
+openerp/netsvc.py needs
+-----------------------
+
+replace:
+--------
+import openerp
+_logger = logging.getLogger(__name__)
+
+by:
+--
+import openerp
+from raven import Client
+client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>')
+client.captureMessage('Sentry Tracking Actived!')
+_logger = logging.getLogger(__name__)
+
+and replace:
+------------
+    except openerp.exceptions.AccessError:
+        raise
+    except openerp.exceptions.AccessDenied:
+        raise
+    except openerp.exceptions.Warning:
+        raise
+    except openerp.exceptions.DeferredException, e:
+        _logger.exception(tools.exception_to_unicode(e))
+        post_mortem(e.traceback)
+        raise
+    except Exception, e:
+        _logger.exception(tools.exception_to_unicode(e))
+        post_mortem(sys.exc_info())
+        raise
+
+by:
+---
+    except openerp.exceptions.AccessError:
+	    client.captureException() # openerp-sentry
+        raise
+    except openerp.exceptions.AccessDenied:
+	    client.captureException() # openerp-sentry
+        raise
+    except openerp.exceptions.Warning:
+	    client.captureException() # openerp-sentry
+        raise
+    except openerp.exceptions.DeferredException, e:
+        _logger.exception(tools.exception_to_unicode(e))
+	    client.captureException() # openerp-sentry
+        post_mortem(e.traceback)
+        raise
+    except Exception, e:
+        _logger.exception(tools.exception_to_unicode(e))
+	    client.captureException() # openerp-sentry
+        post_mortem(sys.exc_info())
+        raise
+
 
 Usage
 -----
