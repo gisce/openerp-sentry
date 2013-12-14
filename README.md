@@ -19,18 +19,16 @@ openerp/netsvc.py needs
 
 replace:
 --------
-
-import openerp
-_logger = logging.getLogger(__name__)
+    import openerp
+    _logger = logging.getLogger(__name__)
 
 by:
 ---
-
-import openerp
-from raven import Client
-client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>')
-client.captureMessage('Sentry Tracking Actived!')
-_logger = logging.getLogger(__name__)
+    import openerp
+    from raven import Client
+    client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>')
+    client.captureMessage('Sentry Tracking Actived!')
+    _logger = logging.getLogger(__name__)
 
 and replace:
 ------------
