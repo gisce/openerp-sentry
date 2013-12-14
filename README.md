@@ -26,7 +26,11 @@ by:
 ---
     import openerp
     from raven import Client
-    client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>')
+    processors = (
+        'raven.processors.SanitizePasswordsProcessor',
+        'raven_sanitize_openerp.OpenerpPasswordsProcessor'
+    )
+    client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>', processors=processors)
     client.captureMessage('Sentry Tracking Actived!')
     _logger = logging.getLogger(__name__)
 
