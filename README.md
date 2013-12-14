@@ -19,15 +19,13 @@ openerp/netsvc.py needs
 
 replace:
 --------
-from loglevels import *
-import tools
+
 import openerp
 _logger = logging.getLogger(__name__)
 
 by:
 ---
-from loglevels import *
-import tools
+
 import openerp
 from raven import Client
 client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>')
