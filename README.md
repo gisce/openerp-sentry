@@ -89,3 +89,7 @@ def create(self, cursor, uid, vals, context=None)
 
 You can see all the documentation for raven here: http://raven.readthedocs.org
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/alainivars/openerp-sentry/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
