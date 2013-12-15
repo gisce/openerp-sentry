@@ -1,16 +1,14 @@
 language: python
 services:
-  - redis-server
   - sentry
 python:
-  - "2.6"
   - "2.7"
-env:
-  matrix:
+#env:
+#  matrix:
     #- DB=sqlite
     #- DB=mysql
     #- DB=postgres
-  global:
+#  global:
     #- PIP_DOWNLOAD_CACHE=".pip_download_cache"
     #- WAD_FILES="package.json,Makefile,setup.py"
     #- WAD_INSTALL_COMMAND="make develop dev-postgres dev-mysql"
@@ -21,7 +19,7 @@ env:
     # - S3_CREDENTIALS=
     #- secure: pZ7DtkEu2q/pGINfVT9S+iPRE5ck6mBQmuHTQz3PVXF/UJmpM1LCbC7aqrw4GXWuUhYc50QCnMZJL1yoBORVEfY4nfXHLRc3HMoWE6Srqf0IBDywi6T+UUdLeOYe13EDb4p8WIpnRGlV4WI1WaPXuFlMEdj5tAjlC9ZotLxyVaI=
 
-before_install:
+#before_install:
   # Use closer nameservers
   #- printf "nameserver 199.91.168.70\nnameserver 199.91.168.71\n" | sudo tee /etc/resolv.conf
 
@@ -31,19 +29,23 @@ before_install:
   #- export WAD_ENVIRONMENT_VARIABLES="TRAVIS_PYTHON_VERSION,TRAVIS_NODE_VERSION,WAD_CACHE_PATH"
   #- export WAD_CACHE_PATH="node_modules,$PIP_DOWNLOAD_CACHE,$VIRTUAL_ENV"
 
-install:
+#install:
   #- time script/wad
-before_script:
+# command to install dependencies
+install: "pip install -r requirements.txt"
+#before_script:
   #- mysql -e 'create database sentry;'
   #- psql -c 'create database sentry;' -U postgres
   #- "echo \"create keyspace sentry with replication = {'class' : 'SimpleStrategy', 'replication_factor': 1};\" | cqlsh --cqlversion=3.0.3"
   #- echo 'create table nodestore (key text primary key, value blob, flags int);' | cqlsh -k sentry --cqlversion=3.0.3
-script:
+# command to run tests
+script: nosetests
+#script:
   #- make lint
   #- make test-js
   #- py.test tests/ --cov sentry --cov-report term-missing
   #- make test-cli
-notifications:
+#notifications:
   #irc:
   #  channels: "irc.freenode.org#sentry"
   #  on_success: change

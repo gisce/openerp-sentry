@@ -64,22 +64,22 @@ and replace:
 by:
 ---
     except openerp.exceptions.AccessError:
-	    client.captureException() # openerp-sentry
+        client.captureException() # openerp-sentry
         raise
     except openerp.exceptions.AccessDenied:
-	    client.captureException() # openerp-sentry
+        client.captureException() # openerp-sentry
         raise
     except openerp.exceptions.Warning:
-	    client.captureException() # openerp-sentry
+        client.captureException() # openerp-sentry
         raise
     except openerp.exceptions.DeferredException, e:
         _logger.exception(tools.exception_to_unicode(e))
-	    client.captureException() # openerp-sentry
+        client.captureException() # openerp-sentry
         post_mortem(e.traceback)
         raise
     except Exception, e:
         _logger.exception(tools.exception_to_unicode(e))
-	    client.captureException() # openerp-sentry
+        client.captureException() # openerp-sentry
         post_mortem(sys.exc_info())
         raise
 
