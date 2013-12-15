@@ -1,6 +1,16 @@
 openerp-sentry
 ==============
 
+.. image:: https://secure.travis-ci.org/alainivars/openerp-sentry.png?branch=master
+   :target: http://travis-ci.org/alainivars/openerp-sentry
+
+.. image:: https://coveralls.io/repos/alainivars/openerp-sentry/badge.png
+   :target: https://coveralls.io/r/alainivars/openerp-sentry
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/alainivars/openerp-sentry/trend.png
+   :target: https://bitdeli.com/free
+
+
 Sentry logger for OpenERP
 
 Configuration
