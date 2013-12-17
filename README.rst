@@ -29,13 +29,13 @@ openerp/netsvc.py needs
 
 replace:
 --------
-.. code-block:: python
+
         import openerp
         _logger = logging.getLogger(__name__)
 
     by:
     ---
-.. code-block:: python
+
         import openerp
         from raven import Client
         processors = (
@@ -48,7 +48,7 @@ replace:
 
 and replace:
 ------------
-.. code-block:: python
+
         except openerp.exceptions.AccessError:
             raise
         except openerp.exceptions.AccessDenied:
@@ -66,7 +66,7 @@ and replace:
 
     by:
     ---
-.. code-block:: python
+
         except openerp.exceptions.AccessError:
             client.captureException() # openerp-sentry
             raise
