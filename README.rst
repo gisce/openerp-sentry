@@ -29,7 +29,7 @@ openerp/netsvc.py needs
 
 replace:
 --------
-    code-block:: python
+.. code-block:: python
         import openerp
         _logger = logging.getLogger(__name__)
 
@@ -48,7 +48,7 @@ replace:
 
 and replace:
 ------------
-    code-block:: python
+.. code-block:: python
         except openerp.exceptions.AccessError:
             raise
         except openerp.exceptions.AccessDenied:
@@ -66,7 +66,7 @@ and replace:
 
     by:
     ---
-    code-block:: python
+.. code-block:: python
         except openerp.exceptions.AccessError:
             client.captureException() # openerp-sentry
             raise
