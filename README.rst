@@ -11,7 +11,13 @@ openerp-sentry
    :target: https://bitdeli.com/free
 
 
-Sentry logger for OpenERP
+Sentry logger for OpenERP 7.xx
+
+Work, but use in your development only, it only a beta version :)
+
+a/ The build don't work in travis, because is not yet set up for this module
+b/ The coverage is not writing for now, i work on
+
 
 Configuration
 -------------
@@ -27,15 +33,13 @@ Configuration
 openerp/netsvc.py needs
 -----------------------
 
-replace:
---------
-::
++replace::
+
     import openerp
     _logger = logging.getLogger(__name__)
 
-by:
----
-::
++ by::
+
     import openerp
     from raven import Client
     processors = (
@@ -46,9 +50,8 @@ by:
     client.captureMessage('Sentry Tracking Actived!')
     _logger = logging.getLogger(__name__)
 
-and replace:
-------------
-::
++ replace::
+
     except openerp.exceptions.AccessError:
         raise
     except openerp.exceptions.AccessDenied:
@@ -64,9 +67,8 @@ and replace:
         post_mortem(sys.exc_info())
         raise
 
-by:
----
-::
++ by::
+
    except openerp.exceptions.AccessError:
         client.captureException() # openerp-sentry
         raise
@@ -87,17 +89,17 @@ by:
         post_mortem(sys.exc_info())
         raise
 
-Usage
------
++Usage
 
 * All uncaught exceptions will be processed with Sentry logger.
 * `osv.except_osv` exceptions won't be processed`.
 * You can use raven client from your OpenERP instance.
 
-```python
-def create(self, cursor, uid, vals, context=None)
-    client = self.pool.get('sentry.setup').client
-    client.captureMessage('Hello world!')
-```
++ exemple ::
+
+    def create(self, cursor, uid, vals, context=None)
+        client = self.pool.get('sentry.setup').client
+        client.captureMessage('Hello world!')
+
 
 You can see all the documentation for raven here: http://raven.readthedocs.org
