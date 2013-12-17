@@ -33,7 +33,7 @@ Configuration
 openerp/netsvc.py needs
 -----------------------
 
-+replace::
++ replace::
 
     import openerp
     _logger = logging.getLogger(__name__)
@@ -89,7 +89,7 @@ openerp/netsvc.py needs
         post_mortem(sys.exc_info())
         raise
 
-+Usage
++ Usage
 
 * All uncaught exceptions will be processed with Sentry logger.
 * `osv.except_osv` exceptions won't be processed`.
