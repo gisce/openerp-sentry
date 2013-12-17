@@ -29,13 +29,13 @@ openerp/netsvc.py needs
 
 replace:
 --------
-```python
+::
     import openerp
     _logger = logging.getLogger(__name__)
-```
+
 by:
 ---
-```python
+::
     import openerp
     from raven import Client
     processors = (
@@ -45,10 +45,10 @@ by:
     client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>', processors=processors)
     client.captureMessage('Sentry Tracking Actived!')
     _logger = logging.getLogger(__name__)
-```
+
 and replace:
 ------------
-```python
+::
     except openerp.exceptions.AccessError:
         raise
     except openerp.exceptions.AccessDenied:
@@ -63,10 +63,10 @@ and replace:
         _logger.exception(tools.exception_to_unicode(e))
         post_mortem(sys.exc_info())
         raise
-```
+
 by:
 ---
-```python
+::
    except openerp.exceptions.AccessError:
         client.captureException() # openerp-sentry
         raise
@@ -86,7 +86,7 @@ by:
         client.captureException() # openerp-sentry
         post_mortem(sys.exc_info())
         raise
-```
+
 Usage
 -----
 
