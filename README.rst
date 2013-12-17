@@ -35,7 +35,7 @@ replace:
 
     by:
     ---
-    code-block:: python
+.. code-block:: python
         import openerp
         from raven import Client
         processors = (
