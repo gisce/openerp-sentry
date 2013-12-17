@@ -29,60 +29,63 @@ openerp/netsvc.py needs
 
 replace:
 --------
-    import openerp
-    _logger = logging.getLogger(__name__)
+    code-block:: python
+        import openerp
+        _logger = logging.getLogger(__name__)
 
-by:
----
-    import openerp
-    from raven import Client
-    processors = (
-        'raven.processors.SanitizePasswordsProcessor',
-        'raven_sanitize_openerp.OpenerpPasswordsProcessor'
-    )
-    client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>', processors=processors)
-    client.captureMessage('Sentry Tracking Actived!')
-    _logger = logging.getLogger(__name__)
+    by:
+    ---
+    code-block:: python
+        import openerp
+        from raven import Client
+        processors = (
+            'raven.processors.SanitizePasswordsProcessor',
+            'raven_sanitize_openerp.OpenerpPasswordsProcessor'
+        )
+        client = Client('http://<your_key>@sentry:<your_port>/<your_group_in_sentry>', processors=processors)
+        client.captureMessage('Sentry Tracking Actived!')
+        _logger = logging.getLogger(__name__)
 
 and replace:
 ------------
-    except openerp.exceptions.AccessError:
-        raise
-    except openerp.exceptions.AccessDenied:
-        raise
-    except openerp.exceptions.Warning:
-        raise
-    except openerp.exceptions.DeferredException, e:
-        _logger.exception(tools.exception_to_unicode(e))
-        post_mortem(e.traceback)
-        raise
-    except Exception, e:
-        _logger.exception(tools.exception_to_unicode(e))
-        post_mortem(sys.exc_info())
-        raise
+    code-block:: python
+        except openerp.exceptions.AccessError:
+            raise
+        except openerp.exceptions.AccessDenied:
+            raise
+        except openerp.exceptions.Warning:
+            raise
+        except openerp.exceptions.DeferredException, e:
+            _logger.exception(tools.exception_to_unicode(e))
+            post_mortem(e.traceback)
+            raise
+        except Exception, e:
+            _logger.exception(tools.exception_to_unicode(e))
+            post_mortem(sys.exc_info())
+            raise
 
-by:
----
-    except openerp.exceptions.AccessError:
-        client.captureException() # openerp-sentry
-        raise
-    except openerp.exceptions.AccessDenied:
-        client.captureException() # openerp-sentry
-        raise
-    except openerp.exceptions.Warning:
-        client.captureException() # openerp-sentry
-        raise
-    except openerp.exceptions.DeferredException, e:
-        _logger.exception(tools.exception_to_unicode(e))
-        client.captureException() # openerp-sentry
-        post_mortem(e.traceback)
-        raise
-    except Exception, e:
-        _logger.exception(tools.exception_to_unicode(e))
-        client.captureException() # openerp-sentry
-        post_mortem(sys.exc_info())
-        raise
-
+    by:
+    ---
+    code-block:: python
+        except openerp.exceptions.AccessError:
+            client.captureException() # openerp-sentry
+            raise
+        except openerp.exceptions.AccessDenied:
+            client.captureException() # openerp-sentry
+            raise
+        except openerp.exceptions.Warning:
+            client.captureException() # openerp-sentry
+            raise
+        except openerp.exceptions.DeferredException, e:
+            _logger.exception(tools.exception_to_unicode(e))
+            client.captureException() # openerp-sentry
+            post_mortem(e.traceback)
+            raise
+        except Exception, e:
+            _logger.exception(tools.exception_to_unicode(e))
+            client.captureException() # openerp-sentry
+            post_mortem(sys.exc_info())
+            raise
 
 Usage
 -----
