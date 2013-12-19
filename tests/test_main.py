@@ -4,17 +4,34 @@
 import unittest
 
 from itsbroken.transaction import Transaction
-from itsbroken.testing import DB_NAME, POOL, USER, CONTEXT
+from itsbroken.testing import DB_NAME, POOL, USER, CONTEXT, install_module, drop_database
 
-from test_base import TestBase
-
-
-class TestMain(TestBase):
+class TestMain(unittest.TestCase):
     """
     Tests
     """
 
-    def test_001_one(self):
+    def setUp(self):
+        install_module('product')
+
+
+    def test_0010_create(self):
+        """
+        Test by creating a new partner
+        """
+        with Transaction().start(DB_NAME, USER, CONTEXT) as txn:
+            partner_obj = POOL.get('res.partner')
+
+            values = {
+                'name': 'Sharoon Thomas'
+            }
+            id = partner_obj.create(
+                txn.cursor, txn.user, values, txn.context
+            )
+            partner = partner_obj.browse(txn.cursor, txn.user, id)
+            self.assertEqual(partner.name, values['name'])
+
+    def test_0020_one(self):
         """
         Tests
         """
