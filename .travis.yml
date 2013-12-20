@@ -12,13 +12,14 @@ install:
 # version only work with py3k
   - pip install "pyparsing==1.5.7"
   - pip install distribute
-  - pip install flake8
-#  - pip install nose
+#  - pip install flake8
+  - pip install nose
+#  - pip install coveralls
   - ./install_nightly.sh
   - python setup.py install
 script:
   - python setup.py test_on_travis
-#  - nosetests
+  - nosetests --with-coverage --cover-package=sentry
 #  - flake8 .
 notifications:
   email:
