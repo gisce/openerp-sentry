@@ -11,6 +11,7 @@ install:
 # OpenERP does not specify the version of pyparsing and the later
 # version only work with py3k
   - pip install "pyparsing==1.5.7"
+  - pip install distribute
   - pip install nose
   - ./install_nightly.sh
   - python setup.py install
