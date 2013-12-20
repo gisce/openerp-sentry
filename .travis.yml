@@ -19,7 +19,7 @@ install:
 script:
   - python setup.py test_on_travis
 #  - nosetests
-  - flake8 .
+#  - flake8 .
 notifications:
   email:
     - alainivars@gmail.com
