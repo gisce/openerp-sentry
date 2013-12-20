@@ -22,7 +22,6 @@ before_install:
   - 'export WAD_ENVIRONMENT_VARIABLES="TRAVIS_PYTHON_VERSION,TRAVIS_NODE_VERSION,WAD_CACHE_PATH"'
   - 'export WAD_CACHE_PATH="node_modules,$PIP_DOWNLOAD_CACHE,$VIRTUAL_ENV"'
 install:
-  - time ci/wad
 # OpenERP does not specify the version of pyparsing and the later
 # version only work with py3k
   - pip install "pyparsing==1.5.7"
