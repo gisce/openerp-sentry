@@ -1,6 +1,11 @@
 language: python
 python:
   - "2.7"
+env:
+  global:
+    - 'PIP_DOWNLOAD_CACHE=".pip_download_cache"'
+    - 'WAD_FILES="package.json,Makefile,setup.py"'
+    - 'WAD_INSTALL_COMMAND=ci/setup'
 virtualenv:
   system_site_packages: true
 services:
