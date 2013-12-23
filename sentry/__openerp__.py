@@ -13,6 +13,9 @@
     "license": "GPL-3",
     'website': '',
     'depends': ['base'],
+    'external_dependencies': {
+        'python': ['raven', ],
+    },
 #    'init': [],
     'data': [],
     'demo': [],
