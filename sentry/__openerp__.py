@@ -14,7 +14,7 @@
     'website': '',
     'depends': ['base'],
     'external_dependencies': {
-        'python': ['raven', ],
+        'python': ['raven', 'raven-sanitize-openerp', ],
     },
 #    'init': [],
     'data': [],
