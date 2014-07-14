@@ -5,9 +5,9 @@ from raven import Client
 from raven.conf import setup_logging
 from raven.handlers.logging import SentryHandler
 
-from osv import osv
-from tools import config
-from tools.translate import _
+from openerp.osv import osv
+from openerp.tools import config
+from openerp.tools.translate import _
 
 
 class SentrySetup(osv.osv):
