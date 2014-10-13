@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 # This file is part of openerp-sentry. The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
-
+import os
 from osv import osv
 from tools import config
-from tools.translate import _
 import pooler
+import netsvc
 
 from raven import Client
+
+
+def log(msg, level=netsvc.LOG_INFO):
+    logger = netsvc.Logger()
+    logger.notifyChannel('sentry', netsvc.LOG_INFO, msg)
 
 
 class SentyDispatcherException(Exception):
@@ -26,10 +31,7 @@ class SentyDispatcherException(Exception):
 
 
 def monkeypatch():
-    import netsvc
-    logger = netsvc.Logger()
-    logger.notifyChannel('sentry', netsvc.LOG_INFO,
-                         u'Monkeypatching OpenERPDispatcherException!')
+    log(u'Monkeypatching OpenERPDispatcherException!')
     netsvc.OpenERPDispatcherException = SentyDispatcherException
 
 
@@ -39,16 +41,19 @@ class SentrySetup(osv.osv):
     _name = 'sentry.setup'
 
     def __init__(self, pool, cursor):
-        if not config.get('sentry_dsn', False):
-            raise osv.except_osv(
-                _(u'Error'),
-                _(u'No sentry DSN configured in config file.')
-            )
         processors = (
             'raven.processors.SanitizePasswordsProcessor',
             'raven_sanitize_openerp.OpenerpPasswordsProcessor'
         )
-        self.client = Client(dsn=config['sentry_dsn'], processors=processors)
+        dsn_env = os.getenv('SENTRY_DSN')
+        dsn = config.get('sentry_dsn')
+        if dsn_env:
+            config['sentry_dsn'] = dsn_env
+            log('Updating sentry_dsn=%s conf from environment var' % dsn_env)
+        elif dsn:
+            os.environ['SENTRY_DSN'] = dsn
+            log('Setting up SENTRY_DSN=%s environment var' % dsn)
+        self.client = Client(processors=processors)
         monkeypatch()
         super(SentrySetup, self).__init__(pool, cursor)
 
