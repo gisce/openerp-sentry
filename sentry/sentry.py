@@ -19,11 +19,25 @@ from signals import NETSVC_DISPATCH_EXCEPTION
 logger = logging.getLogger('openerp.sentry')
 
 
+class ExecuteInDir(object):
+    def __init__(self, d):
+        self.cd = os.getcwd()
+        self.d = d
+
+    def __enter__(self):
+        os.chdir(self.d)
+
+    def __exit__(self, *a, **kw):
+        os.chdir(self.cd)
+
+
 def get_release():
+    with ExecuteInDir(os.path.join(config['root_path'])):
+        git = subprocess.check_output(['git', 'describe', '--tags']).strip()
     return '{}@{}-{}'.format(
         release.name,
         release.version,
-        subprocess.check_output(['git', 'describe', '--tags']).strip()
+        git
     )
 
 
