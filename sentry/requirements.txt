@@ -1,2 +1,1 @@
-raven
-raven-sanitize-openerp
+sentry-sdk
