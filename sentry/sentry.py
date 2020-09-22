@@ -93,7 +93,7 @@ class SentrySetup(osv.osv):
         dsn = config.get('sentry_dsn')
         app_release = get_release()
         environment = config.get('environment', 'staging')
-        sample_rate = float(config.get('sentry_sample_rate', 0))
+        traces_sample_rate = float(config.get('sentry_traces_sample_rate', 0))
         if dsn_env:
             config['sentry_dsn'] = dsn_env
             logger.info('Updating sentry_dsn=%s conf from environment var', dsn_env)
@@ -102,12 +102,12 @@ class SentrySetup(osv.osv):
             logger.info('Setting up SENTRY_DSN=%s environment var', dsn)
         logger.info(
             'Sentry setup: release: %s, environment: %s, sample_rate: %s',
-            release, environment, sample_rate
+            release, environment, traces_sample_rate
         )
         sentry_sdk.init(
             release=app_release,
             environment=environment,
-            traces_sample_rate=sample_rate,
+            traces_sample_rate=traces_sample_rate,
             before_send=begore_send,
             integrations=[RedisIntegration(), FlaskIntegration(), RqIntegration()]
         )
