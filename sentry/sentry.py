@@ -43,12 +43,11 @@ def get_release():
 
 class Client(object):
 
-    @staticmethod
-    def captureException():
+    def captureException(self):
         sentry_sdk.capture_exception()
 
     @staticmethod
-    def captureMessage(message, level=None, scope=None, **scope_args):
+    def captureMessage(self, message, level=None, scope=None, **scope_args):
         sentry_sdk.capture_message(message, level, scope, scope_args)
 
 
@@ -78,6 +77,12 @@ def send_to_sentry(dispatcher, service_name, method, params, exception):
 NETSVC_DISPATCH_EXCEPTION.connect(send_to_sentry)
 
 
+def begore_send(event, hint):
+    if event.get('logger', '').startswith('openerp'):
+        return None
+    return event
+
+
 class SentrySetup(osv.osv):
     """Monkeypatch OpenERP logger.
     """
@@ -86,7 +91,7 @@ class SentrySetup(osv.osv):
     def __init__(self, pool, cursor):
         dsn_env = os.getenv('SENTRY_DSN')
         dsn = config.get('sentry_dsn')
-        release = get_release()
+        app_release = get_release()
         environment = config.get('environment', 'staging')
         sample_rate = float(config.get('sentry_sample_rate', 0))
         if dsn_env:
@@ -100,9 +105,10 @@ class SentrySetup(osv.osv):
             release, environment, sample_rate
         )
         sentry_sdk.init(
-            release=release,
+            release=app_release,
             environment=environment,
             traces_sample_rate=sample_rate,
+            before_send=begore_send,
             integrations=[RedisIntegration(), FlaskIntegration(), RqIntegration()]
         )
         ignore_logger('openerp.web-services')
