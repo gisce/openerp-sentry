@@ -43,11 +43,12 @@ def get_release():
 
 class Client(object):
 
-    def captureException(self):
+    @staticmethod
+    def captureException():
         sentry_sdk.capture_exception()
 
     @staticmethod
-    def captureMessage(self, message, level=None, scope=None, **scope_args):
+    def captureMessage(message, level=None, scope=None, **scope_args):
         sentry_sdk.capture_message(message, level, scope, scope_args)
 
 
@@ -102,7 +103,7 @@ class SentrySetup(osv.osv):
             logger.info('Setting up SENTRY_DSN=%s environment var', dsn)
         logger.info(
             'Sentry setup: release: %s, environment: %s, sample_rate: %s',
-            release, environment, traces_sample_rate
+            app_release, environment, traces_sample_rate
         )
         sentry_sdk.init(
             release=app_release,
@@ -111,7 +112,6 @@ class SentrySetup(osv.osv):
             before_send=begore_send,
             integrations=[RedisIntegration(), FlaskIntegration(), RqIntegration()]
         )
-        ignore_logger('openerp.web-services')
         self.client = Client()
         super(SentrySetup, self).__init__(pool, cursor)
 
@@ -119,6 +119,10 @@ class SentrySetup(osv.osv):
         if context is None:
             context = {}
         raise Exception('This is a sentry test exception')
+
+    def test_logger(self, cursor, uid, message, logger='openerp.sentry'):
+        test_logger = logging.getLogger(logger)
+        test_logger.error(message)
 
 
 SentrySetup()
