@@ -15,7 +15,7 @@ def log(msg, level=netsvc.LOG_INFO):
     logger.notifyChannel('sentry', netsvc.LOG_INFO, msg)
 
 
-class SentyDispatcherException(Exception):
+class SentyDispatcherException(netsvc.OpenERPDispatcherException):
     def __init__(self, exception, traceback):
         # Ugly hack to know wich type of exception it is.
         # From client code: bin/rpc.py L:46
